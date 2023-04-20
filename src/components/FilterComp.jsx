@@ -11,48 +11,39 @@ export default function FilterComp({ filteredMenu, setFilteredMenu }) {
   });
 
   const filterMenu = () => {
-    console.log(filterInput);
-
+    let temp = filterInput;
     //working fine but if veg or spicy is checked then sort doesn't work
     if (filterInput.veg && filterInput.spicy) {
-      setFilteredMenu(
-        menu.filter(({ is_vegetarian, is_spicy }) => is_vegetarian || is_spicy)
+      temp = menu.filter(
+        ({ is_vegetarian, is_spicy }) => is_vegetarian || is_spicy
       );
     } else if (filterInput.veg) {
-      setFilteredMenu(menu.filter(({ is_vegetarian }) => is_vegetarian));
+      temp = menu.filter(({ is_vegetarian }) => is_vegetarian);
     } else if (filterInput.spicy) {
-      setFilteredMenu(menu.filter(({ is_spicy }) => is_spicy));
+      temp = menu.filter(({ is_spicy }) => is_spicy);
     } else if (!filterInput.veg && !filterInput.spicy) {
-      setFilteredMenu(menu);
+      temp = menu;
     }
-    // console.log("something", filteredMenu);
-  };
 
-  const sortMenu = () => {
     if (filterInput.sortByPrice === "low-to-high") {
-      setFilteredMenu([...filteredMenu].sort((a, b) => a.price - b.price));
+      temp = [...temp].sort((a, b) => a.price - b.price);
     } else if (filterInput.sortByPrice === "high-to-low") {
-      setFilteredMenu([...filteredMenu].sort((a, b) => b.price - a.price));
+      temp = [...temp].sort((a, b) => b.price - a.price);
     }
-  };
 
-  // const sortedMenu = () => {};
-
-  useEffect(() => {
-    setFilteredMenu(
-      menu.filter(
-        ({ name, description }) =>
-          name.toLowerCase().includes(searchText) ||
-          description.toLowerCase().includes(searchText)
-      )
+    temp = temp.filter(
+      ({ name, description }) =>
+        name.toLowerCase().includes(searchText) ||
+        description.toLowerCase().includes(searchText)
     );
-  }, [menu, searchText]);
+
+    setFilteredMenu(temp);
+  };
 
   useEffect(() => {
     filterMenu();
-    sortMenu();
     return () => filterMenu();
-  }, [menu, filterInput]);
+  }, [menu, searchText, filterInput]);
 
   const filterByVegOrSpicy = (e) => {
     const { name, checked } = e.target;
