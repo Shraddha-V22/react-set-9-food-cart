@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMenu } from "../contexts/MenuContext";
 
-export default function FilterComp({ filteredMenu, setFilteredMenu }) {
+export default function FilterComp({ setFilteredMenu }) {
   const { menu } = useMenu();
   const [searchText, setSearchText] = useState("");
   const [filterInput, setFilterInput] = useState({

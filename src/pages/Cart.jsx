@@ -1,23 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FoodCard from "../components/FoodCard";
 import { useCart } from "../contexts/CartContext";
 
 export default function Cart() {
   const { cart, dispatch } = useCart();
   const [disableCoupon, setDisableCoupon] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
   console.log(cart);
 
   const deliveryTime = cart.reduce(
     (acc, { delivery_time }) => acc + delivery_time,
     0
   );
-  const totalPrice = cart.reduce(
-    (acc, { price, quantity }) => acc + price * quantity,
-    0
-  );
+
+  useEffect(() => {
+    setTotalPrice(
+      cart.reduce((acc, { price, quantity }) => acc + price * quantity, 0)
+    );
+  }, [cart]);
 
   const applyCoupon = () => {
-    dispatch({ type: "COUPON" });
+    setTotalPrice((prev) => (prev - 5).toFixed(2));
     setDisableCoupon(true);
   };
 

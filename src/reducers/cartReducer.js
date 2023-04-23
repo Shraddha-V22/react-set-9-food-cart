@@ -23,11 +23,11 @@ export const cartReducer = (cart, { type, payload }) => {
       }
     case "REMOVE":
       return cart.filter((item) => item.id !== payload);
-    case "COUPON":
-      return cart.map((item) => ({
-        ...item,
-        price: (item.price - 5).toFixed(2),
-      }));
+    // case "COUPON":
+    //   return cart.map((item) => ({
+    //     ...item,
+    //     price: (item.price - 5).toFixed(2),
+    //   }));
     default:
       return cart;
   }
